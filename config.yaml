@@ -1,0 +1,58 @@
+# Конфиг поиска VW Caddy. Все цены в PLN.
+
+search:
+  make: volkswagen
+  model: caddy
+  year_from: 2025          # rok produkcji от
+  year_to: 2027            # rok produkcji до
+  price_min: null          # мин. цена (brutto, как на сайте) — null = без ограничения
+  price_max: 200000        # макс. цена brutto
+  fuel: [petrol]           # petrol | diesel | hybrid | cng | lpg | electric ; [] = любое
+  gearbox: []              # manual | automatic ; [] = любая
+  power_min: null          # KM
+  power_max: null
+  versions: [Kombi, Cargo] # Kombi | Cargo | Maxi | California. "Maxi" в списке = пускать длинные (rozstaw 2970)
+  max_mileage: 30000       # км; null = без ограничения
+  include_used: true       # false = только nowe
+
+company:
+  vat_status: czynny       # czynny | zwolniony
+  # czynny   -> сравниваем netto (если есть Faktura VAT 23%); без FV — полная цена
+  # zwolniony -> сравниваем brutto (полная стоимость)
+  vat_deduction_pct: 100   # 100 = сравнение чистым netto (по умолчанию).
+                           # 50 = легковой (M1 Kombi) при смешанном использовании:
+                           # к netto добавляется половина VAT. Cargo N1 «ciężarowy» обычно 100%.
+
+reference:                 # ориентир для топ-10 "совпадение"
+  engine_cc: 1498          # 1.5 TSI
+  fuel: petrol
+  power_hp: 116
+  model_year: 2027
+  wheelbase_mm: 2755       # стандарт (не Maxi)
+  fleet_price_net: 95053
+  fleet_price_gross: 116915
+
+sources:
+  otomoto: true
+  olx: true
+  autoplac: true           # проверяется доступность; на момент написания блокирует (Cloudflare)
+  vehis: true
+  carleasepolska: true
+  ayvens_flex: true
+
+politeness:
+  delay_min: 3.0           # сек между запросами к одному домену
+  delay_max: 6.0
+  max_pages: 200           # лимит сетевых запросов за запуск (кэш не считается)
+  search_cache_hours: 6    # страницы поиска считаются свежими N часов
+  detail_cache_days: 30    # страницы объявлений
+  detail_pages_per_source: 80   # макс. детальных страниц на источник за запуск
+  user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36"
+
+schedule:
+  interval_hours: 12       # используется в README / генераторе cron
+
+paths:
+  db: data/caddy.sqlite
+  cache_dir: cache
+  output_dir: output
